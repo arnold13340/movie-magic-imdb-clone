@@ -120,7 +120,8 @@ img{
   }
 
   .heart-icon{
-    color: red;
+    color: #ccc; /* Default color (e.g., gray) for empty heart */
+    cursor: pointer;
     font-size: 19px;
     position: absolute;
     bottom:20px;
@@ -133,3 +134,8 @@ img{
     font-style: italic;
     margin-left: 17px;
   }
+
+
+.heart-icon.filled {
+    color: red; /* Color for filled heart */
+}

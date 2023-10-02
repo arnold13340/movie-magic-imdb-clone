@@ -53,27 +53,36 @@ function createAndAppendMovieList(jsondata) {
   titleDiv.appendChild(favoritesIcon);
    
   //function for storing the data to local storage
-  favoritesIcon.addEventListener("click", function () {
-   
-    if (typeof Storage !== "undefined") {
-      // Generate a unique key for the movie based on its title
-      const movieKey = `favorite_${jsondata.Title}`;
-
-      // Get the existing favorites for this movie from local storage or initialize an empty array if it doesn't exist
-      let movieFavorites = JSON.parse(localStorage.getItem(movieKey)) || [];
-
-      // Add the movie data to the favorites array for this movie
-      movieFavorites.push(jsondata);
-
-      // Update the local storage with the updated favorites array for this movie
-      localStorage.setItem(movieKey, JSON.stringify(movieFavorites));
-
-    } else {
-      console.error("Local storage is not supported by your browser.");
-    }
-
-
-
+    favoritesIcon.addEventListener("click", function () {
+      if (typeof Storage !== "undefined") {
+          // Generate a unique key for the movie based on its title
+          const movieKey = `favorite_${jsondata.Title}`;
+  
+          // Get the existing favorites for this movie from local storage or initialize an empty array if it doesn't exist
+          let movieFavorites = JSON.parse(localStorage.getItem(movieKey)) || [];
+  
+          // Check if the movie is already in the favorites array
+          const isAlreadyFavorite = movieFavorites.some((favorite) => favorite.Title === jsondata.Title);
+  
+          if (isAlreadyFavorite) {
+              // If the movie is already a favorite, remove it from the favorites array
+              movieFavorites = movieFavorites.filter((favorite) => favorite.Title !== jsondata.Title);
+  
+              // Set the background color to its default value (e.g., white)
+              favoritesIcon.style.backgroundColor = "white";
+          } else {
+              // Add the movie data to the favorites array for this movie
+              movieFavorites.push(jsondata);
+  
+              // Set the background color to red to indicate it's a favorite
+              favoritesIcon.classList.toggle("filled");
+          }
+  
+          // Update the local storage with the updated favorites array for this movie
+          localStorage.setItem(movieKey, JSON.stringify(movieFavorites));
+      } else {
+          console.error("Local storage is not supported by your browser.");
+      }
   });
 
   let year = document.createElement("p");
